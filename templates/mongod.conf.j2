@@ -33,6 +33,7 @@ operationProfiling:
 #operationProfiling:
 {% endif %}
 
+{% if mongodb_config['cloud_monitoring'] == true -%}
 cloud:
   monitoring:
     free:
@@ -42,6 +43,7 @@ cloud:
   {{ item }}
   {% endfor %}
   {% endif %}
+{% endif %}
 
 {% if mongodb_set_parameters -%}
 setParameter:

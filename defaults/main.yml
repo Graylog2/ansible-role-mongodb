@@ -108,6 +108,7 @@ mongodb_set_parameters:
 
 # custom config options
 mongodb_config:
+  cloud_monitoring: false
 
 # --- Defaults for mongod.conf
 mongo_net:
