@@ -1,0 +1,58 @@
+# {{ ansible_managed }}
+
+net:
+{{ mongo_net | to_nice_yaml(indent=2) | indent(width=2, first=True) }}
+
+processManagement:
+{{ mongo_processmanagement | to_nice_yaml(indent=2) | indent(width=2, first=True) }}
+
+{% if mongo_replication != '' %}
+replication:
+{{ mongo_replication | to_nice_yaml(indent=2) | indent(width=2, first=True) }}
+{% else %}
+#replication:
+{% endif %}
+
+{% if mongo_security != '' %}
+security:
+{{ mongo_security | to_nice_yaml(indent=2) | indent(width=2, first=True) }}
+{% else %}
+#security:
+{% endif %}
+
+storage:
+{{ mongo_storage | to_nice_yaml(indent=2) | indent(width=2, first=True) }}
+
+systemLog:
+{{ mongo_systemlog | to_nice_yaml(indent=2) | indent(width=2, first=True) }}
+
+{% if mongo_operationprofiling != '' %}
+operationProfiling:
+{{ mongo_operationprofiling | to_nice_yaml(indent=2) | indent(width=2, first=True) }}
+{% else %}
+#operationProfiling:
+{% endif %}
+
+cloud:
+  monitoring:
+    free:
+      state: {{ mongodb_cloud_monitoring_free_state }}
+  {%- if mongodb_config['cloud'] is defined and mongodb_config['cloud'] is iterable %}
+  {%- for item in mongodb_config['cloud'] -%}
+  {{ item }}
+  {% endfor %}
+  {% endif %}
+
+{% if mongodb_set_parameters -%}
+setParameter:
+  {% for key, value in mongodb_set_parameters.items() -%}
+  {{ key }}: {{ value }}
+  {% endfor %}
+{% endif %}
+
+{% if mongodb_auditlog %}
+auditLog:
+{{ mongo_auditlog | to_nice_yaml(indent=2) | indent(width=2, first=True) }}
+{% else %}
+#auditLog:
+{% endif %}

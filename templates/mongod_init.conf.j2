@@ -1,0 +1,22 @@
+# {{ ansible_managed }}
+
+net:
+  bindIp: '127.0.0.1'
+  ipv6: {{ mongodb_net_ipv6 | to_nice_json }}
+  maxIncomingConnections: {{ mongodb_net_maxconns }}
+  port: {{ mongodb_net_port }}
+
+processManagement:
+  fork: {{ mongodb_processmanagement_fork | to_nice_json }}
+  {% if mongodb_pidfile_path is defined and mongodb_pidfile_path != '' -%}
+  pidFilePath: {{ mongodb_pidfile_path }}
+  {% endif %}
+
+security:
+  authorization: 'disabled'
+
+storage:
+{{ mongo_storage | to_nice_yaml(indent=2) | indent(width=2, first=True) }}
+
+systemLog:
+{{ mongo_systemlog | to_nice_yaml(indent=2) | indent(width=2, first=True) }}
